@@ -26,16 +26,3 @@ module "azurerm_virtual_network" {
   github_repo_template_repo_name  = "terraform-module-repo-template"
   oauth_token_id                  = data.tfe_oauth_client.default_oauth_client.oauth_token_id
 }
-
-module "azurerm_key_vault" {
-  source  = "app.terraform.io/fabiend/tfc-registry-module/github"
-  version = "0.1.0"
-
-  github_repo_name        = "terraform-azurerm-key-vault"
-  github_repo_description = "A simple module to create an instance of Azure Key Vault"
-
-  github_repo_use_template        = true
-  github_repo_template_owner_name = "fabiendelpierre"
-  github_repo_template_repo_name  = "terraform-module-repo-template"
-  oauth_token_id                  = data.tfe_oauth_client.default_oauth_client.oauth_token_id
-}
