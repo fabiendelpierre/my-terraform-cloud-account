@@ -15,6 +15,8 @@ resource "tfe_registry_module" "github_tfc_registry_module" {
 # set up GitHub repos for reusable modules and import them into TFC
 # automatically.
 module "azurerm_virtual_network" {
+  depends_on = [module.terraform-module-repo-template]
+
   source  = "app.terraform.io/fabiend/tfc-registry-module/github"
   version = "0.1.0"
 
@@ -28,6 +30,8 @@ module "azurerm_virtual_network" {
 }
 
 module "azurerm_key_vault" {
+  depends_on = [module.terraform-module-repo-template]
+
   source  = "app.terraform.io/fabiend/tfc-registry-module/github"
   version = "0.1.0"
 
