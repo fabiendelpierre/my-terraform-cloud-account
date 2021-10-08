@@ -1,4 +1,4 @@
-name: "Terraform"
+name: "TFLint + Checkov + Terraform"
 
 on:
   push:
@@ -7,7 +7,58 @@ on:
   pull_request:
 
 jobs:
+  tflint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Cache plugin dir
+        uses: actions/cache@v2
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-$${{ hashFiles('.tflint.hcl') }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ~1
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: latest
+          github_token: $${{ secrets.GITHUB_TOKEN }}
+
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint -f compact
+
+  checkov:
+    needs: tflint
+    runs-on: ubuntu-latest
+    name: checkov-action
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Run Checkov action
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./
+
   terraform:
+    needs: checkov
     name: "Terraform"
     runs-on: ubuntu-latest
     steps:
@@ -19,10 +70,6 @@ jobs:
         with:
           terraform_version: ~1
           cli_config_credentials_token: $${{ secrets.TFC_API_TOKEN }}
-
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
 
       - name: Terraform Init
         id: init

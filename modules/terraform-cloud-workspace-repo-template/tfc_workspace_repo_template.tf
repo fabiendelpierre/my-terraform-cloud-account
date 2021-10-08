@@ -59,6 +59,23 @@ resource "github_repository_file" "pre_commit_config" {
   })
 }
 
+resource "github_repository_file" "checkov_config" {
+  repository = github_repository.main.name
+  branch     = github_repository.main.default_branch
+  file       = ".checkov.yml"
+
+  commit_message = "Set up Checkov config file"
+  commit_author  = "Terraform Cloud"
+  commit_email   = "fabiend@app.terraform.io"
+
+  overwrite_on_create = true
+
+  content = templatefile("${path.module}/checkov.yml.tpl", {
+    pre_commit_config_repo    = "git://github.com/antonbabenko/pre-commit-terraform"
+    pre_commit_config_version = "v1.51.0"
+  })
+}
+
 resource "github_repository_file" "main_tf" {
   repository = github_repository.main.name
   branch     = github_repository.main.default_branch
