@@ -7,4 +7,12 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  backend "remote" {
+    organization = "organization_name"
+
+    workspaces {
+      name = "workspace_name"
+    }
+  }
 }
