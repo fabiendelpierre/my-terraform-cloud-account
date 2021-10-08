@@ -11,6 +11,16 @@ resource "tfe_registry_module" "github_tfc_registry_module" {
   }
 }
 
+resource "tfe_registry_module" "github_tfc_workspace_module" {
+  provider = tfe.module_registry
+
+  vcs_repo {
+    display_identifier = "fabiendelpierre/terraform-github-tfc-workspace-module"
+    identifier         = "fabiendelpierre/terraform-github-tfc-workspace-module"
+    oauth_token_id     = data.tfe_oauth_client.default_oauth_client.oauth_token_id
+  }
+}
+
 # The next modules below use the one that was provisioned "manually" above to
 # set up GitHub repos for reusable modules and import them into TFC
 # automatically.
