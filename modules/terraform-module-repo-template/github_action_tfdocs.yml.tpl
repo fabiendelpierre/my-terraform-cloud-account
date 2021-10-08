@@ -6,7 +6,7 @@ on:
 jobs:
   tfdocs:
     runs-on: ubuntu-latest
-
+    name: Terraform-Docs
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2

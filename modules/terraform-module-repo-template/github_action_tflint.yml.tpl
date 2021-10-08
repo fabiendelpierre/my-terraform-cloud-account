@@ -9,7 +9,7 @@ on:
 jobs:
   tflint:
     runs-on: ubuntu-latest
-
+    name: TFLint
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2

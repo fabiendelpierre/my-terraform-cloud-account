@@ -9,7 +9,7 @@ on:
 jobs:
   tflint:
     runs-on: ubuntu-latest
-
+    name: TFLint
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
   checkov:
     needs: tflint
     runs-on: ubuntu-latest
-    name: checkov-action
+    name: Checkov
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -59,7 +59,7 @@ jobs:
 
   terraform:
     needs: checkov
-    name: "Terraform"
+    name: Terraform
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
